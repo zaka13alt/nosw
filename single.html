@@ -1,0 +1,380 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+		/>
+	
+		<meta name="googlebot" content="index, follow, snippet" />
+		<link rel="icon" href="data:,">
+		   <style>
+        @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300;1,400&display=background-service-workerap");
+
+body {
+	font-family: "Roboto", Arial, Helvetica, sans-serif;
+	margin: 0;
+	background: #111;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.fa-magnifying-glass {
+	color: white;
+}
+
+.flex-center {
+	display: flex;
+	justify-content: center;
+}
+
+.header-center {
+	align-items: center;
+	flex-direction: column;
+	margin-top: 10%;
+}
+
+.left-margin {
+	margin: 0px 16px;
+}
+
+#_0xz0a1b {
+	border: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: #111;
+}
+
+#_0xz0a1c {
+	color: #ff6666 !important;
+	white-space: pre-wrap;
+}
+
+#_0xz0a1d {
+	font-size: 12px;
+	color: #fff;
+	font-family: "Courier New", Courier, monospace;
+}
+
+#_0xz0a1e {
+	color: white;
+	background: #555555;
+	cursor: pointer;
+	outline: none;
+	border: none;
+	border-radius: 6px;
+	padding: 16px 20px;
+	line-height: 16px;
+	display: none;
+}
+
+#_0xz0a1e:active {
+	background: #333333;
+}
+
+#_0xz0a1e.show {
+	display: block;
+}
+
+.logo {
+	width: 150px;
+	height: 150px;
+}
+
+.logo-wrapper .text {
+	font-size: 75px;
+	color: #fff;
+}
+
+.logo-wrapper h1 {
+	color: white;
+}
+
+footer {
+	margin: 0 5vw;
+	margin-top: auto;
+	display: flex;
+	flex-direction: column;
+	line-height: 30px;
+	margin-bottom: 20px;
+}
+
+footer > div {
+	display: flex;
+	justify-content: left;
+	align-items: center;
+	flex-wrap: wrap;
+	margin-bottom: 15px;
+}
+
+footer a,
+footer span {
+	margin: 0 15px;
+	text-decoration: none;
+	color: #fff;
+	font-size: 15px;
+}
+
+footer a {
+	cursor: pointer;
+}
+
+footer a:hover {
+	text-decoration: underline;
+}
+
+.desc p {
+	width: 560px;
+	color: rgba(253, 253, 253, 0.514);
+}
+
+#_0xz0a1f {
+	background: none;
+	font-family: inherit;
+	padding: 0px 17px;
+	height: 48px;
+	border: 1px solid rgb(255, 255, 255, 0.2);
+	color: var(--text-color);
+	border-radius: 3px;
+	outline: none;
+	width: 350px;
+	margin-top: 5px;
+	border-radius: 50px;
+	color: #fff;
+	transition: border-radius 0.1s;
+}
+
+#_0xz0a1f:focus {
+	border: 1px solid rgba(253, 253, 253, 0.514);
+	border-radius: 6px;
+}
+
+.Q84o-djRJV-Qa3Rb-E9Fsd-dbGVv {
+	border-radius: 10px;
+	padding: 10px;
+	display: block;
+	border: #fff 1px solid;
+	color: #fff;
+	display: flex;
+	flex-wrap: wrap;
+	margin-bottom: 15px;
+}
+
+.Q84o-djRJV-Qa3Rb-E9Fsd-dbGVv label {
+	margin-left: auto;
+	margin-right: 15px;
+}
+
+.Q84o-djRJV-Qa3Rb-E9Fsd-dbGVv a,
+.Q84o-djRJV-Qa3Rb-E9Fsd-dbGVv label {
+	color: white;
+	text-decoration: underline;
+	text-align: right;
+}
+
+.Q84o-djRJV-Qa3Rb-E9Fsd-dbGVv pre {
+	display: none;
+	width: 100%;
+}
+
+.Q84o-djRJV-Qa3Rb-E9Fsd-dbGVv label::after {
+	content: "show license";
+	cursor: pointer;
+}
+
+.Q84o-djRJV-Qa3Rb-E9Fsd-dbGVv input:checked + label::after {
+	content: "hide license";
+}
+
+.Q84o-djRJV-Qa3Rb-E9Fsd-dbGVv input:checked ~ pre {
+	display: block;
+}
+    </style>
+
+		<script src="https://cdn.jsdelivr.net/gh/zaka13alt/nosw@main/x9K2m.js"></script>
+		<script src="https://cdn.jsdelivr.net/gh/zaka13alt/nosw@main/8b3rt.js"></script>
+		<script src="https://gcore.jsdelivr.net/gh/zaka13alt/nosw@main/single.js"></script>
+		<script src="https://cdn.jsdelivr.net/gh/zaka13alt/nosw@main/load.js"></script>
+    <script>
+!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(exports):"function"==typeof define&&define.amd?define(["exports"],t):t((e="undefined"!=typeof globalThis?globalThis:e||self).W1I41={})}(this,function(e){"use strict";const t=globalThis.fetch,r=globalThis.SharedWorker,s=globalThis.localStorage,a=globalThis.navigator.serviceWorker,o=MessagePort.prototype.postMessage,n={prototype:{send:WebSocket.prototype.send},CLOSED:WebSocket.CLOSED,CLOSING:WebSocket.CLOSING,CONNECTING:WebSocket.CONNECTING,OPEN:WebSocket.OPEN};async function c(){const e=(await self.clients.matchAll({type:"window",includeUncontrolled:!0})).map(async e=>{const t=await function(e){let t=new MessageChannel;return new Promise(r=>{e.postMessage({type:"getPort",port:t.port2},[t.port2]),t.port1.onmessage=e=>{r(e.data)}})}(e);return await i(t),t}),t=Promise.race([Promise.any(e),new Promise((e,t)=>setTimeout(t,1e3,new TypeError("timeout")))]);try{return await t}catch(e){if(e instanceof AggregateError)throw console.error("vikyb: failed to get a vikyb SharedWorker MessagePort as all clients returned an invalid MessagePort."),new Error("All clients returned an invalid MessagePort.");return console.warn("vikyb: failed to get a vikyb SharedWorker MessagePort within 1s, retrying"),await c()}}function i(e){const t=new MessageChannel,r=new Promise((e,r)=>{t.port1.onmessage=t=>{"pong"===t.data.type&&e()},setTimeout(r,1500)});return o.call(e,{message:{type:"ping"},port:t.port2},[t.port2]),r}function l(e,t){const s=new r(e,"vikyb-worker");return t&&a.addEventListener("message",t=>{if("getPort"===t.data.type&&t.data.port){console.debug("vikyb: recieved request for port from sw");const s=new r(e,"vikyb-worker");o.call(t.data.port,s.port,[s.port])}}),s.port}let h=null;function d(){if(null===h){const e=new MessageChannel,t=new ReadableStream;let r;try{o.call(e.port1,t,[t]),r=!0}catch(e){r=!1}return h=r,r}return h}class p{constructor(e){this.channel=new BroadcastChannel("vikyb"),e instanceof MessagePort||e instanceof Promise?this.port=e:this.createChannel(e,!0)}createChannel(e,t){if(self.clients)this.port=c(),this.channel.onmessage=e=>{"refreshPort"===e.data.type&&(this.port=c())};else if(e&&SharedWorker){if(!e.startsWith("/")&&!e.includes(":"))throw new Error("Invalid URL. Must be absolute or start at the root.");this.port=l(e,t),console.debug("vikyb: setting localStorage vikyb-path to",e),s["vikyb-path"]=e}else{if(!SharedWorker)throw new Error("Unable to get a channel to the SharedWorker.");{const e=s["vikyb-path"];if(console.debug("vikyb: got localStorage vikyb-path:",e),!e)throw new Error("Unable to get vikyb workerPath from localStorage.");this.port=l(e,t)}}}async sendMessage(e,t){this.port instanceof Promise&&(this.port=await this.port);try{await i(this.port)}catch{return console.warn("vikyb: Failed to get a ping response from the worker within 1.5s. Assuming port is dead."),this.createChannel(),await this.sendMessage(e,t)}const r=new MessageChannel,s=[r.port2,...t||[]],a=new Promise((e,t)=>{r.port1.onmessage=r=>{const s=r.data;"error"===s.type?t(s.error):e(s)}});return o.call(this.port,{message:e,port:r.port2},s),await a}}class u extends EventTarget{constructor(e,t=[],r,s){super(),this.protocols=t,this.readyState=n.CONNECTING,this.url=e.toString(),this.protocols=t;const a=e=>{this.protocols=e,this.readyState=n.OPEN;const t=new Event("open");this.dispatchEvent(t)},o=async e=>{const t=new MessageEvent("message",{data:e});this.dispatchEvent(t)},c=(e,t)=>{this.readyState=n.CLOSED;const r=new CloseEvent("close",{code:e,reason:t});this.dispatchEvent(r)},i=()=>{this.readyState=n.CLOSED;const e=new Event("error");this.dispatchEvent(e)};this.channel=new MessageChannel,this.channel.port1.onmessage=e=>{"open"===e.data.type?a(e.data.args[0]):"message"===e.data.type?o(e.data.args[0]):"close"===e.data.type?c(e.data.args[0],e.data.args[1]):"error"===e.data.type&&i()},r.sendMessage({type:"websocket",websocket:{url:e.toString(),protocols:t,requestHeaders:s,channel:this.channel.port2}},[this.channel.port2])}send(...e){if(this.readyState===n.CONNECTING)throw new DOMException("Failed to execute 'send' on 'WebSocket': Still in CONNECTING state.");let t=e[0];t.buffer&&(t=t.buffer.slice(t.byteOffset,t.byteOffset+t.byteLength)),o.call(this.channel.port1,{type:"data",data:t},t instanceof ArrayBuffer?[t]:[])}close(e,t){o.call(this.channel.port1,{type:"close",closeCode:e,closeReason:t})}}function w(e,t,r){console.error(`error while processing '${r}': `,t),e.postMessage({type:"error",error:t})}function f(e){for(let t=0;t<e.length;t++){const r=e[t];if(!"!#$%&'*+-.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ^_`abcdefghijklmnopqrstuvwxyz|~".includes(r))return!1}return!0}const g=["ws:","wss:"],b=[101,204,205,304],y=[301,302,303,307,308];class m{constructor(e){this.worker=new p(e)}createWebSocket(e,t=[],r,s){try{e=new URL(e)}catch(t){throw new DOMException(`Faiiled to construct 'WebSocket': The URL '${e}' is invalid.`)}if(!g.includes(e.protocol))throw new DOMException(`Failed to construct 'WebSocket': The URL's scheme must be either 'ws' or 'wss'. '${e.protocol}' is not allowed.`);Array.isArray(t)||(t=[t]),t=t.map(String);for(const e of t)if(!f(e))throw new DOMException(`Failed to construct 'WebSocket': The subprotocol '${e}' is invalid.`);s=s||{};return new u(e,t,this.worker,s)}async fetch(e,r){const s=new Request(e,r),a=r?.headers||s.headers,o=a instanceof Headers?Object.fromEntries(a):a,n=s.body;let c=new URL(s.url);if(c.protocol.startsWith("blob:")){const e=await t(c),r=new Response(e.body,e);return r.rawHeaders=Object.fromEntries(e.headers),r.rawResponse={body:e.body,headers:Object.fromEntries(e.headers),status:e.status,statusText:e.statusText},r.finalURL=c.toString(),r}for(let e=0;;e++){let t=(await this.worker.sendMessage({type:"fetch",fetch:{remote:c.toString(),method:s.method,headers:o,body:n||void 0}},n?[n]:[])).fetch,a=new Response(b.includes(t.status)?void 0:t.body,{headers:new Headers(t.headers),status:t.status,statusText:t.statusText});a.rawHeaders=t.headers,a.rawResponse=t,a.finalURL=c.toString();const i=r?.redirect||s.redirect;if(!y.includes(a.status))return a;switch(i){case"follow":{const t=a.headers.get("location");if(20>e&&null!==t){c=new URL(t,c);continue}throw new TypeError("Failed to fetch")}case"error":throw new TypeError("Failed to fetch");case"manual":return a}}}}console.debug("vikyb: running v2.1.8 (build 75b1f5a)"),e.meir2Client=m,e.W1I41Connection=class{constructor(e){this.worker=new p(e)}async getzIWyC(){return(await this.worker.sendMessage({type:"get"})).name}async setzIWyC(e,t,r){await this.setManualzIWyC(`\n\t\t\tconst { default: meir2zIWyC } = await import("${e}");\n\t\t\treturn [meir2zIWyC, "${e}"];\n\t\t`,t,r)}async setManualzIWyC(e,t,r){if("vikyb-remote"===e)throw new Error("Use setRemotezIWyC.");await this.worker.sendMessage({type:"set",client:{function:e,args:t}},r)}async setRemotezIWyC(e,t){const r=new MessageChannel;r.port1.onmessage=async t=>{const r=t.data.port,s=t.data.message;if("fetch"===s.type)try{e.ready||await e.init(),await async function(e,t,r){const s=await r.request(new URL(e.fetch.remote),e.fetch.method,e.fetch.body,e.fetch.headers,null);if(!d()&&s.body instanceof ReadableStream){const e=new Response(s.body);s.body=await e.arrayBuffer()}s.body instanceof ReadableStream||s.body instanceof ArrayBuffer?o.call(t,{type:"fetch",fetch:s},[s.body]):o.call(t,{type:"fetch",fetch:s})}(s,r,e)}catch(e){w(r,e,"fetch")}else if("websocket"===s.type)try{e.ready||await e.init(),await async function(e,t,r){const[s,a]=r.connect(new URL(e.websocket.url),e.websocket.protocols,e.websocket.requestHeaders,t=>{o.call(e.websocket.channel,{type:"open",args:[t]})},t=>{t instanceof ArrayBuffer?o.call(e.websocket.channel,{type:"message",args:[t]},[t]):o.call(e.websocket.channel,{type:"message",args:[t]})},(t,r)=>{o.call(e.websocket.channel,{type:"close",args:[t,r]})},t=>{o.call(e.websocket.channel,{type:"error",args:[t]})});e.websocket.channel.onmessage=e=>{"data"===e.data.type?s(e.data.data):"close"===e.data.type&&a(e.data.closeCode,e.data.closeReason)},o.call(t,{type:"websocket"})}(s,r,e)}catch(e){w(r,e,"websocket")}},await this.worker.sendMessage({type:"set",client:{function:"vikyb-remote",args:[r.port2,t]}},[r.port2])}getInnerPort(){return this.worker.port}},e.meir2WebSocket=u,e.WebSocketFields=n,e.WorkerConnection=p,e.browserSupportsTransferringStreams=d,e.default=m,e.maxRedirects=20,e.validProtocol=f,Object.defineProperty(e,"__esModule",{value:!0})});
+</script>
+
+	</head>
+
+	<body>
+		<div
+			title="h"
+			class="flex-center logo-wrapper header-center"
+		>
+			<h1></h1>
+		</div>
+		<div class="flex-center desc left-margin">
+			<p>
+				
+			</p>
+		</div>
+
+		<form id="_0xz0a20" class="flex-center">
+			<input
+				id="_0xz0a21"
+				value=""
+				type="hidden"
+			/>
+			<input id="_0xz0a1f" type="text" placeholder="" />
+		</form>
+		<div class="desc left-margin">
+			<p id="_0xz0a1c"></p>
+			<pre id="_0xz0a1d"></pre>
+		</div>
+		<footer>
+			<div>
+				
+			</div>
+			<div>
+				<span></span>
+			</div>
+		</footer>
+		<iframe style="display: none" id="_0xz0a1b"></iframe>
+
+		
+
+		<!-- _98756() helper (was _98756.js) -->
+		<script>
+		"use strict";
+		/**
+		 *
+		 * @param {string} input
+		 * @param {string} template Template for a _98756 query.
+		 * @returns {string} Fully qualified URL
+		 */
+		function _98756(input, template) {
+			try {
+				// input is a valid URL:
+				// eg: https://example.com, https://example.com/test?q=param
+				return new URL(input).toString();
+			} catch (err) {
+				// input was not a valid URL
+			}
+
+			try {
+				// input is a valid URL when http:// is added to the start:
+				// eg: example.com, https://example.com/test?q=param
+				const url = new URL(`http://${input}`);
+				// only if the hostname has a TLD/subdomain
+				if (url.hostname.includes(".")) return url.toString();
+			} catch (err) {
+				// input was not valid URL
+			}
+
+			// input may have been a valid URL, however the hostname was invalid
+
+			// Attempts to convert the input to a fully qualified URL have failed
+			// Treat the input as a _98756 query
+			return template.replace("%s", encodeURIComponent(input));
+		}
+		</script>
+
+		<!-- main logic + query parameter handling (was index.js) -->
+		<script>
+		"use strict";
+
+		const form = document.getElementById("_0xz0a20");
+		const address = document.getElementById("_0xz0a1f");
+		const _98756Engine = document.getElementById("_0xz0a21");
+		const error = document.getElementById("_0xz0a1c");
+		const errorCode = document.getElementById("_0xz0a1d");
+		const connection = new W1I41.W1I41Connection("data:text/javascript;base64,IWZ1bmN0aW9uKCl7InVzZSBzdHJpY3QiO2NvbnN0IGU9TWVzc2FnZVBvcnQucHJvdG90eXBlLnBvc3RNZXNzYWdlO2xldCB0PW51bGw7ZnVuY3Rpb24gYShlLHQsYSl7Y29uc29sZS5lcnJvcihgZXJyb3Igd2hpbGUgcHJvY2Vzc2luZyAnJHthfSc6IGAsdCksZS5wb3N0TWVzc2FnZSh7dHlwZToiZXJyb3IiLGVycm9yOnR9KX1hc3luYyBmdW5jdGlvbiBuKGEsbixzKXtjb25zdCBvPWF3YWl0IHMucmVxdWVzdChuZXcgVVJMKGEuZmV0Y2gucmVtb3RlKSxhLmZldGNoLm1ldGhvZCxhLmZldGNoLmJvZHksYS5mZXRjaC5oZWFkZXJzLG51bGwpO2lmKCFmdW5jdGlvbigpe2lmKG51bGw9PT10KXtjb25zdCBhPW5ldyBNZXNzYWdlQ2hhbm5lbCxuPW5ldyBSZWFkYWJsZVN0cmVhbTtsZXQgczt0cnl7ZS5jYWxsKGEucG9ydDEsbixbbl0pLHM9ITB9Y2F0Y2goZSl7cz0hMX1yZXR1cm4gdD1zLHN9cmV0dXJuIHR9KCkmJm8uYm9keSBpbnN0YW5jZW9mIFJlYWRhYmxlU3RyZWFtKXtjb25zdCBlPW5ldyBSZXNwb25zZShvLmJvZHkpO28uYm9keT1hd2FpdCBlLmFycmF5QnVmZmVyKCl9by5ib2R5IGluc3RhbmNlb2YgUmVhZGFibGVTdHJlYW18fG8uYm9keSBpbnN0YW5jZW9mIEFycmF5QnVmZmVyP2UuY2FsbChuLHt0eXBlOiJmZXRjaCIsZmV0Y2g6b30sW28uYm9keV0pOmUuY2FsbChuLHt0eXBlOiJmZXRjaCIsZmV0Y2g6b30pfWxldCBzPW51bGwsbz0iIjtmdW5jdGlvbiByKCl7cmV0dXJuIG5ldyBFcnJvcigidGhlcmUgYXJlIG5vIG1laXIyIGNsaWVudHMiLHtjYXVzZToiTm8gbWVpcjJ6SVd5QyB3YXMgc2V0LiBUcnkgY3JlYXRpbmcgYSBXMUk0MUNvbm5lY3Rpb24gYW5kIGNhbGxpbmcgYHNldHpJV3lDKClgIG9yIGBzZXRNYW51YWx6SVd5QygpYCBvbiBpdCBiZWZvcmUgdXNpbmcgbWVpcjJDbGllbnQuIn0pfWZ1bmN0aW9uIGModCxhKXtjb25zdCBuPXM7bGV0IG89W2FdO3QuZmV0Y2g/LmJvZHkmJm8ucHVzaCh0LmZldGNoLmJvZHkpLHQud2Vic29ja2V0Py5jaGFubmVsJiZvLnB1c2godC53ZWJzb2NrZXQuY2hhbm5lbCksZS5jYWxsKG4se21lc3NhZ2U6dCxwb3J0OmF9LG8pfWZ1bmN0aW9uIGwodCl7dC5vbm1lc3NhZ2U9YXN5bmMgdD0+e2NvbnN0IGw9dC5kYXRhLnBvcnQsaT10LmRhdGEubWVzc2FnZTtpZigicGluZyI9PT1pLnR5cGUpZS5jYWxsKGwse3R5cGU6InBvbmcifSk7ZWxzZSBpZigic2V0Ij09PWkudHlwZSl0cnl7Y29uc3QgdD1hc3luYyBmdW5jdGlvbigpe30uY29uc3RydWN0b3I7aWYoInZpa3liLXJlbW90ZSI9PT1pLmNsaWVudC5mdW5jdGlvbilzPWkuY2xpZW50LmFyZ3NbMF0sbz1gdmlreWItcmVtb3RlICgke2kuY2xpZW50LmFyZ3NbMV19KWA7ZWxzZSB0cnl7Y29uc3QgZT1uZXcgdChpLmNsaWVudC5mdW5jdGlvbiksW2Esbl09YXdhaXQgZSgpO3M9bmV3IGEoLi4uaS5jbGllbnQuYXJncyksbz1ufWNhdGNoKGUpe3Rocm93IGUuY2F1c2U9IlRoZSBtZWlyMnpJV3lDIHByb3ZpZGVkIHdhcyBpbnZhbGlkLiBDb21tb24gY2F1c2VzIG9mIHRoaXMgYXJlIGEgZGVmYXVsdCBleHBvcnQgdGhhdCBpcyBub3QgYSBjbGFzcyB0aGF0IGltcGxlbWVudHMgbWVpcjJ6SVd5QyBpZiB5b3UgYXJlIHVzaW5nIGBzZXR6SVd5QygpYCIsZX1jb25zb2xlLmxvZygic2V0IHpJV3lDIHRvICIscyxvKSxlLmNhbGwobCx7dHlwZToic2V0In0pfWNhdGNoKGUpe2EobCxlLCJzZXQiKX1lbHNlIGlmKCJnZXQiPT09aS50eXBlKWwucG9zdE1lc3NhZ2Uoe3R5cGU6ImdldCIsbmFtZTpvfSk7ZWxzZSBpZigiZmV0Y2giPT09aS50eXBlKXRyeXtpZighcyl0aHJvdyByKCk7aWYocyBpbnN0YW5jZW9mIE1lc3NhZ2VQb3J0KXJldHVybiB2b2lkIGMoaSxsKTtzLnJlYWR5fHxhd2FpdCBzLmluaXQoKSxhd2FpdCBuKGksbCxzKX1jYXRjaChlKXthKGwsZSwiZmV0Y2giKX1lbHNlIGlmKCJ3ZWJzb2NrZXQiPT09aS50eXBlKXRyeXtpZighcyl0aHJvdyByKCk7aWYocyBpbnN0YW5jZW9mIE1lc3NhZ2VQb3J0KXJldHVybiB2b2lkIGMoaSxsKTtzLnJlYWR5fHxhd2FpdCBzLmluaXQoKSxhd2FpdCBhc3luYyBmdW5jdGlvbih0LGEsbil7Y29uc3RbcyxvXT1uLmNvbm5lY3QobmV3IFVSTCh0LndlYnNvY2tldC51cmwpLHQud2Vic29ja2V0LnByb3RvY29scyx0LndlYnNvY2tldC5yZXF1ZXN0SGVhZGVycyxhPT57ZS5jYWxsKHQud2Vic29ja2V0LmNoYW5uZWwse3R5cGU6Im9wZW4iLGFyZ3M6W2FdfSl9LGE9PnthIGluc3RhbmNlb2YgQXJyYXlCdWZmZXI/ZS5jYWxsKHQud2Vic29ja2V0LmNoYW5uZWwse3R5cGU6Im1lc3NhZ2UiLGFyZ3M6W2FdfSxbYV0pOmUuY2FsbCh0LndlYnNvY2tldC5jaGFubmVsLHt0eXBlOiJtZXNzYWdlIixhcmdzOlthXX0pfSwoYSxuKT0+e2UuY2FsbCh0LndlYnNvY2tldC5jaGFubmVsLHt0eXBlOiJjbG9zZSIsYXJnczpbYSxuXX0pfSxhPT57ZS5jYWxsKHQud2Vic29ja2V0LmNoYW5uZWwse3R5cGU6ImVycm9yIixhcmdzOlthXX0pfSk7dC53ZWJzb2NrZXQuY2hhbm5lbC5vbm1lc3NhZ2U9ZT0+eyJkYXRhIj09PWUuZGF0YS50eXBlP3MoZS5kYXRhLmRhdGEpOiJjbG9zZSI9PT1lLmRhdGEudHlwZSYmbyhlLmRhdGEuY2xvc2VDb2RlLGUuZGF0YS5jbG9zZVJlYXNvbil9LGUuY2FsbChhLHt0eXBlOiJ3ZWJzb2NrZXQifSl9KGksbCxzKX1jYXRjaChlKXthKGwsZSwid2Vic29ja2V0Iil9fX1uZXcgQnJvYWRjYXN0Q2hhbm5lbCgidmlreWIiKS5wb3N0TWVzc2FnZSh7dHlwZToicmVmcmVzaFBvcnQifSksc2VsZi5vbmNvbm5lY3Q9ZT0+e2woZS5wb3J0c1swXSl9LGNvbnNvbGUuZGVidWcoInZpa3liOiBydW5uaW5nIHYyLjEuOCAoYnVpbGQgNzViMWY1YSkiKX0oKTs=");
+
+		let n4L9b = "wss://api.zaka13.com/api/";
+
+		async function openW1I41(url) {
+		    try {
+		        await connection.setzIWyC("https://cdn.jsdelivr.net/gh/zaka13alt/uvthing@main/index-1OTY61e4.min.mjs", [
+		            { WeZaN: n4L9b }
+		        ]);
+
+		        const _8kX2n = document.getElementById("_0xz0a1b");
+
+		        _8kX2n.style.display = "block";
+		        _8kX2n.style.position = "fixed";
+		        _8kX2n.style.left = "0";
+		        _8kX2n.style.top = "0";
+		        _8kX2n.style.width = "100%";
+		        _8kX2n.style.height = "100%";
+		        _8kX2n.style.border = "0";
+		        _8kX2n.style.zIndex = "999999";
+		        _8kX2n.style.background = "#fff";
+
+		        document.documentElement.style.height = "100%";
+		        document.body.style.height = "100%";
+		        document.body.style.margin = "0";
+
+		        await u22Loader.navigate(_8kX2n, url);
+		    } catch (err) {
+		        error.textContent = "Failed to load W1I41.";
+		        errorCode.textContent = String(err);
+		        console.error(err);
+		    }
+		}
+
+		form.addEventListener("submit", async function (event) {
+		    event.preventDefault();
+
+		    const url = _98756(address.value, _98756Engine.value);
+		    await openW1I41(url);
+		});
+
+		/* ---- query parameter handling ---- */
+		(function () {
+		    const params = new URLSearchParams(location.search);
+		    let action = null, goUrl = null, w1Url = null;
+		    const jP5mKZ2fRtUrl = value => {
+		        const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
+		        return atob(normalized.padEnd(normalized.length + (4 - normalized.length % 4) % 4, "="));
+		    };
+
+		    if (params.has("refresh")) action = "refresh";
+		    else if (params.has("back")) action = "back";
+		    else if (params.has("forward")) action = "forward";
+
+		    if (params.has("go")) {
+		        try { goUrl = jP5mKZ2fRtUrl(params.get("go")); } catch (e) {}
+		    }
+		    if (params.has("w1")) {
+		        try { w1Url = jP5mKZ2fRtUrl(params.get("w1")); } catch (e) {}
+		    }
+
+		    if (!action && !goUrl && !w1Url) return;
+
+		    // Override the hardcoded 41 URL if one was supplied.
+		    if (w1Url) {
+		        n4L9b = w1Url;
+		    }
+
+		    function fire() {
+		        if (goUrl) {
+		            openW1I41(goUrl);
+		        } else if (action === "refresh") {
+		            try { document.getElementById("_0xz0a1b").contentWindow.__u22.reload(); } catch (e) {}
+		        } else if (action === "back") {
+		            try { document.getElementById("_0xz0a1b").contentWindow.history.back(); } catch (e) {}
+		        } else if (action === "forward") {
+		            try { document.getElementById("_0xz0a1b").contentWindow.history.forward(); } catch (e) {}
+		        }
+		    }
+
+		    if (document.readyState === "loading") {
+		        document.addEventListener("DOMContentLoaded", fire, { once: true });
+		    } else {
+		        fire();
+		    }
+		})();
+		/* ---- end query parameter handling ---- */
+		</script>
+	</body>
+</html>
