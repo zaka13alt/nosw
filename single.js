@@ -2,7 +2,7 @@ self.__u22$config = {
 	handler: "https://cdn.jsdelivr.net/gh/zaka13alt/nosw@main/Q3wr8.js",
 	client: "https://cdn.jsdelivr.net/gh/zaka13alt/nosw@main/5j8hx.js",
 	bundle: "https://cdn.jsdelivr.net/gh/zaka13alt/nosw@main/8b3rt.js",
-	config: "https://cdn.jsdelivr.net/gh/zaka13alt/nosw@main/single.js",
+	config: "https://gcore.jsdelivr.net/gh/zaka13alt/nosw@main/single.js",
 	loader: "https://cdn.jsdelivr.net/gh/zaka13alt/nosw@main/load.js",
 
 	
