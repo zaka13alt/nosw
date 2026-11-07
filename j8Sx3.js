@@ -3,7 +3,7 @@
  * Page-side replacement for the former service worker.
  *
  * Runs only in the top-level shell page (index.html). Proxied documents live in
- * blob: iframes below the shell and call into this object (see h2Vx6.js), so
+ * blob: iframes below the shell and call into this object (see q7Bz5.js), so
  * every network request, cookie write and blob URL is owned by one long-lived
  * realm (blob URLs die with the document that created them).
  */
