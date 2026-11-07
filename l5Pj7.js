@@ -3,7 +3,7 @@
  * Page-side replacement for the former service worker.
  *
  * Runs only in the top-level shell page (index.html). Proxied documents live in
- * blob: iframes below the shell and call into this object (see Q3wR8.js), so
+ * blob: iframes below the shell and call into this object (see h2Vx6.js), so
  * every network request, cookie write and blob URL is owned by one long-lived
  * realm (blob URLs die with the document that created them).
  */
@@ -44,6 +44,19 @@
 	const NO_REWRITE = /^(#|about:|data:|blob:|javascript:|mailto:|tel:)/i;
 	const MAX_CSS_DEPTH = 4;
 	const FETCH_TIMEOUT_MS = 30000;
+	// Pages like discord.com/login list hundreds of scripts/stylesheets. Firing them all
+	// at once starves the transport and the per-request timeout expires while requests
+	// are still only queued, dropping chunks the app needs. Cap concurrent upstream
+	// requests and start each timeout only once its request is actually sent.
+	const MAX_INFLIGHT = 16;
+	let inflight = 0;
+	const waiting = [];
+	const acquire = () => (inflight < MAX_INFLIGHT ? (inflight++, Promise.resolve()) : new Promise(resolve => waiting.push(resolve)));
+	const release = () => {
+		const next = waiting.shift();
+		if (next) next();
+		else inflight--;
+	};
 
 	const cookieChannel = typeof BroadcastChannel === "function" ? new BroadcastChannel("u22-cookies") : null;
 
@@ -83,11 +96,27 @@
 
 	const jsonForScript = value => JSON.stringify(value).replace(/</g, "\\u003c").replace(/\u2028|\u2029/g, " ");
 
+	// Times out after `ms` of time the page could actually process the response.
+	// Rewriting big scripts/CSS blocks this thread for long stretches; a plain
+	// setTimeout counts that and kills requests whose answer is already queued.
 	const withTimeout = (promise, ms, what) =>
-		Promise.race([
-			promise,
-			new Promise((_, reject) => setTimeout(() => reject(new Error(`Timed out: ${what}`)), ms)),
-		]);
+		new Promise((resolve, reject) => {
+			let elapsed = 0;
+			let last = performance.now();
+			const tick = setInterval(() => {
+				const now = performance.now();
+				elapsed += Math.min(now - last, 1100);
+				last = now;
+				if (elapsed >= ms) {
+					clearInterval(tick);
+					reject(new Error(`Timed out: ${what}`));
+				}
+			}, 1000);
+			promise.then(
+				value => (clearInterval(tick), resolve(value)),
+				error => (clearInterval(tick), reject(error)),
+			);
+		});
 
 	/*
 	 * Cookie jar + headers + transport: everything the service worker did around
@@ -121,19 +150,26 @@
 		}
 
 		const hasBody = method !== "GET" && method !== "HEAD" && options.body != null;
-		const res = await withTimeout(
-			getTransport().fetch(target.href, {
-				headers,
-				method,
-				body: hasBody ? options.body : undefined,
-				credentials: "omit",
-				mode: "same-origin",
-				cache: options.cache || "default",
-				redirect: options.redirect || "follow",
-			}),
-			FETCH_TIMEOUT_MS,
-			target.href,
-		);
+		await acquire();
+		let res, responseBody;
+		try {
+			res = await withTimeout(
+				getTransport().fetch(target.href, {
+					headers,
+					method,
+					body: hasBody ? options.body : undefined,
+					credentials: "omit",
+					mode: "same-origin",
+					cache: options.cache || "default",
+					redirect: options.redirect || "follow",
+				}),
+				FETCH_TIMEOUT_MS,
+				target.href,
+			);
+			responseBody = [204, 205, 304].includes(res.status) ? new ArrayBuffer(0) : await res.arrayBuffer();
+		} finally {
+			release();
+		}
 
 		const finalUrl = res.finalURL || target.href;
 		const raw = {};
@@ -149,8 +185,7 @@
 			cookieChannel?.postMessage(finalUrl);
 		}
 
-		const body = [204, 205, 304].includes(res.status) ? new ArrayBuffer(0) : await res.arrayBuffer();
-		return { status: res.status, statusText: res.statusText, headers: raw, body, finalUrl, ctx };
+		return { status: res.status, statusText: res.statusText, headers: raw, body: responseBody, finalUrl, ctx };
 	}
 
 	/* ---------- CSS: fetch every dependency, embed as blob: URLs ---------- */
@@ -314,7 +349,7 @@
 			attrs: Object.entries({ "__u22-script": "1", ...attrs }).map(([name, value]) => ({ name, value, skip: true })),
 			skip: true,
 		});
-		const asset = path => (/^[a-z][a-z\d+.-]*:/i.test(path) ? path : location.origin + (path.startsWith("/") ? "" : "/") + path);
+		const asset = path => new URL(path, location.href).href;
 		return [
 			script({}, `self.__u22$cookies=${jsonForScript(cookies)};self.__u22$referrer=${jsonForScript(referrer)};self.__u22$url=${jsonForScript(finalUrl)};`),
 			script({ src: asset(config.bundle) }),

@@ -495,6 +495,80 @@
 
   /* ===================== service-worker-free runtime ===================== */
 
+  // The Cache API only exists in secure contexts, so on plain http:// shells
+  // window.caches is undefined and sites that call caches.open() at startup
+  // (discord.com/login, /app) crash to a white page. Give them an in-memory one.
+  if (!o.caches) (function () {
+    var key = function (r) {
+      var u = typeof r === "string" || r instanceof o.URL ? String(r) : r.url;
+      try { return new URL(u, e.meta.url).href; } catch (_) { return u; }
+    };
+    function Cache() { this._m = new Map(); }
+    Cache.prototype.match = function (r) {
+      var hit = this._m.get(key(r));
+      return Promise.resolve(hit ? hit.clone() : undefined);
+    };
+    Cache.prototype.matchAll = function (r) {
+      var k = r === undefined ? null : key(r), out = [];
+      this._m.forEach(function (res, u) { if (k === null || u === k) out.push(res.clone()); });
+      return Promise.resolve(out);
+    };
+    Cache.prototype.put = function (r, res) { this._m.set(key(r), res.clone()); return Promise.resolve(); };
+    Cache.prototype.add = function (r) {
+      var self = this;
+      return o.fetch(r).then(function (res) {
+        if (!res.ok) throw new TypeError("Cache.add: bad response status " + res.status);
+        return self.put(r, res);
+      });
+    };
+    Cache.prototype.addAll = function (rs) {
+      var self = this;
+      return Promise.all(rs.map(function (r) { return self.add(r); })).then(function () {});
+    };
+    Cache.prototype.delete = function (r) { return Promise.resolve(this._m.delete(key(r))); };
+    Cache.prototype.keys = function () {
+      return Promise.resolve(Array.from(this._m.keys(), function (u) { return new o.Request(u); }));
+    };
+    var stores = new Map();
+    var storage = {
+      open: function (n) { n = String(n); if (!stores.has(n)) stores.set(n, new Cache()); return Promise.resolve(stores.get(n)); },
+      has: function (n) { return Promise.resolve(stores.has(String(n))); },
+      delete: function (n) { return Promise.resolve(stores.delete(String(n))); },
+      keys: function () { return Promise.resolve(Array.from(stores.keys())); },
+      match: function (r) {
+        var all = Array.from(stores.values());
+        return all.reduce(function (p, c) { return p.then(function (hit) { return hit || c.match(r); }); }, Promise.resolve(undefined));
+      },
+    };
+    function CacheStorage() {}
+    CacheStorage.prototype = storage;
+    var instance = new CacheStorage();
+    // Code (e.g. Discord's wasm) checks `x instanceof Cache`, and the Cache /
+    // CacheStorage classes are missing on insecure origins too, so expose ours.
+    try {
+      if (!o.Cache) Object.defineProperty(o, "Cache", { value: Cache, configurable: true, writable: true });
+      if (!o.CacheStorage) Object.defineProperty(o, "CacheStorage", { value: CacheStorage, configurable: true, writable: true });
+      Object.defineProperty(o, "caches", { value: instance, configurable: true, writable: true });
+    } catch (_) {}
+  })();
+
+  // crypto.randomUUID is secure-context only too; getRandomValues is not.
+  if (o.crypto && typeof o.crypto.randomUUID !== "function") {
+    try {
+      Object.defineProperty(Object.getPrototypeOf(o.crypto), "randomUUID", {
+        configurable: true,
+        writable: true,
+        value: function randomUUID() {
+          var b = o.crypto.getRandomValues(new Uint8Array(16)), h = [];
+          b[6] = (b[6] & 0x0f) | 0x40;
+          b[8] = (b[8] & 0x3f) | 0x80;
+          for (var i = 0; i < 16; i++) h.push((b[i] + 0x100).toString(16).slice(1));
+          return h.slice(0, 4).join("") + "-" + h.slice(4, 6).join("") + "-" + h.slice(6, 8).join("") + "-" + h.slice(8, 10).join("") + "-" + h.slice(10).join("");
+        },
+      });
+    } catch (_) {}
+  }
+
   var U22_MARK = e.attributePrefix + "-attr-";
   var U22_LOCAL = /^\s*(#|data:|blob:|about:)/i;
   var u22ShellCache = null;
