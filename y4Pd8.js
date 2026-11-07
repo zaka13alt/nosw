@@ -126,74 +126,100 @@
 			);
 		});
 
+	const REDIRECTS = [301, 302, 303, 307, 308];
+	const MAX_REDIRECTS = 20;
+
 	/*
 	 * Cookie jar + headers + transport: everything the service worker did around
-	 * the raw fetch. Returns the decoded upstream response.
+	 * the raw fetch. Redirects are followed here, one hop at a time, so cookies set
+	 * on a redirect (e.g. Google's captcha exemption cookie) are stored, each hop
+	 * sends the cookies for its own host, and the method changes like a browser
+	 * (303 -> GET, 301/302 after POST -> GET) instead of re-POSTing to the target.
 	 */
 	async function request(url, options = {}) {
-		const target = new URL(url);
-		if (target.protocol !== "http:" && target.protocol !== "https:")
-			throw new TypeError(`Unsupported protocol: ${target.protocol}`);
+		let current = new URL(url);
+		if (current.protocol !== "http:" && current.protocol !== "https:")
+			throw new TypeError(`Unsupported protocol: ${current.protocol}`);
 
-		const method = (options.method || "GET").toUpperCase();
-		const ctx = makeCtx(target.href);
-		const db = await getDb(ctx);
-		const cookies = (await ctx.cookie.getCookies(db)) || [];
+		let method = (options.method || "GET").toUpperCase();
+		let body = method !== "GET" && method !== "HEAD" && options.body != null ? options.body : undefined;
+		const redirectMode = options.redirect || "follow";
 
-		const headers = {};
-		for (const [key, value] of Object.entries(options.headers || {})) headers[key.toLowerCase()] = value;
-
-		const cookieHeader = ctx.cookie.serialize(cookies, ctx.meta, false);
-		if (cookieHeader) headers.cookie = cookieHeader;
-		headers["user-agent"] = navigator.userAgent;
-		headers["accept-language"] ||= (navigator.languages || [navigator.language]).join(",");
-		headers.accept ||= ACCEPT[options.destination] || "*/*";
-
+		const base = {};
+		for (const [key, value] of Object.entries(options.headers || {})) base[key.toLowerCase()] = value;
+		base["user-agent"] = navigator.userAgent;
+		base["accept-language"] ||= (navigator.languages || [navigator.language]).join(",");
+		base.accept ||= ACCEPT[options.destination] || "*/*";
 		if (options.referrer && /^https?:/i.test(options.referrer)) {
 			const referrer = new URL(options.referrer);
-			headers.referer = referrer.href;
+			base.referer = referrer.href;
 			const unsafe = method !== "GET" && method !== "HEAD";
-			if (!headers.origin && (unsafe || (options.mode === "cors" && referrer.origin !== target.origin)))
-				headers.origin = referrer.origin;
+			if (!base.origin && (unsafe || (options.mode === "cors" && referrer.origin !== current.origin)))
+				base.origin = referrer.origin;
 		}
 
-		const hasBody = method !== "GET" && method !== "HEAD" && options.body != null;
-		await acquire();
-		let res, responseBody;
-		try {
-			res = await withTimeout(
-				getTransport().fetch(target.href, {
-					headers,
-					method,
-					body: hasBody ? options.body : undefined,
-					credentials: "omit",
-					mode: "same-origin",
-					cache: options.cache || "default",
-					redirect: options.redirect || "follow",
-				}),
-				FETCH_TIMEOUT_MS,
-				target.href,
-			);
-			responseBody = [204, 205, 304].includes(res.status) ? new ArrayBuffer(0) : await res.arrayBuffer();
-		} finally {
-			release();
+		for (let hop = 0; ; hop++) {
+			const ctx = makeCtx(current.href);
+			const db = await getDb(ctx);
+			const headers = { ...base };
+			delete headers.cookie;
+			const cookieHeader = ctx.cookie.serialize((await ctx.cookie.getCookies(db)) || [], ctx.meta, false);
+			if (cookieHeader) headers.cookie = cookieHeader;
+
+			await acquire();
+			let res, responseBody;
+			try {
+				res = await withTimeout(
+					getTransport().fetch(current.href, {
+						headers,
+						method,
+						body,
+						credentials: "omit",
+						mode: "same-origin",
+						cache: options.cache || "default",
+						redirect: "manual",
+					}),
+					FETCH_TIMEOUT_MS,
+					current.href,
+				);
+				responseBody = [204, 205, 304].includes(res.status) ? new ArrayBuffer(0) : await res.arrayBuffer();
+			} finally {
+				release();
+			}
+
+			const raw = {};
+			for (const [key, value] of Object.entries(res.rawHeaders || {})) raw[key.toLowerCase()] = value;
+			for (const name of STRIP_HEADERS) delete raw[name];
+
+			const setCookie = raw["set-cookie"];
+			delete raw["set-cookie"];
+			if (setCookie) {
+				// Cookies belong to the host that answered this hop.
+				await ctx.cookie.setCookies(setCookie, db, ctx.meta);
+				cookieChannel?.postMessage(current.href);
+			}
+
+			const location = header(raw, "location");
+			if (REDIRECTS.includes(res.status) && location != null && redirectMode !== "manual") {
+				if (redirectMode === "error" || hop >= MAX_REDIRECTS) throw new TypeError("Failed to fetch");
+				let next;
+				try {
+					next = new URL(location, current);
+				} catch {
+					throw new TypeError("Failed to fetch");
+				}
+				if ((res.status === 303 && method !== "GET" && method !== "HEAD") || ((res.status === 301 || res.status === 302) && method === "POST")) {
+					method = "GET";
+					body = undefined;
+					for (const key of Object.keys(base)) if (key.startsWith("content-")) delete base[key];
+					delete base.origin;
+				}
+				current = next;
+				continue;
+			}
+
+			return { status: res.status, statusText: res.statusText, headers: raw, body: responseBody, finalUrl: current.href, ctx };
 		}
-
-		const finalUrl = res.finalURL || target.href;
-		const raw = {};
-		for (const [key, value] of Object.entries(res.rawHeaders || {})) raw[key.toLowerCase()] = value;
-		for (const name of STRIP_HEADERS) delete raw[name];
-
-		const setCookie = raw["set-cookie"];
-		delete raw["set-cookie"];
-		if (setCookie) {
-			// Cookies belong to the host that answered, which differs after redirects.
-			ctx.meta.base = ctx.meta.url = new URL(finalUrl);
-			await ctx.cookie.setCookies(setCookie, db, ctx.meta);
-			cookieChannel?.postMessage(finalUrl);
-		}
-
-		return { status: res.status, statusText: res.statusText, headers: raw, body: responseBody, finalUrl, ctx };
 	}
 
 	/* ---------- CSS: fetch every dependency, embed as blob: URLs ---------- */

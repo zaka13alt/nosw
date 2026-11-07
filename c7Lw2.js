@@ -1,9 +1,9 @@
 self.__u22$config = {
 	handler: "https://cdn.jsdelivr.net/gh/zaka13alt/nosw@main/q7Bz5.js",
 	client: "https://cdn.jsdelivr.net/gh/zaka13alt/nosw@main/f6Yp2.js",
-	bundle: "https://cdn.jsdelivr.net/gh/zaka13alt/nosw@main/t3Mv8.js",
-	config: "https://cdn.jsdelivr.net/gh/zaka13alt/nosw@main/v2Gn6.js",
-	loader: "https://cdn.jsdelivr.net/gh/zaka13alt/nosw@main/j8Sx3.js",
+	bundle: "https://cdn.jsdelivr.net/gh/zaka13alt/nosw@main/k2Rj7.js",
+	config: "https://cdn.jsdelivr.net/gh/zaka13alt/nosw@main/c7Lw2.js",
+	loader: "https://cdn.jsdelivr.net/gh/zaka13alt/nosw@main/y4Pd8.js",
 
 	
 	rewriteUrl(url) {
