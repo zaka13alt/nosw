@@ -4,9 +4,9 @@ const __u22base = self.document && document.currentScript && document.currentScr
 self.__u22$config = {
 	handler: __u22base + "h2Vx6.js",
 	client: __u22base + "c4Nw9.js",
-	bundle: __u22base + "r7Kq2.js",
-	config: __u22base + "g3Fy8.js",
-	loader: __u22base + "l5Pj7.js",
+	bundle: __u22base + "b9Wd4.js",
+	config: __u22base + "p8Lc3.js",
+	loader: __u22base + "n6Qb2.js",
 
 	
 	rewriteUrl(url) {

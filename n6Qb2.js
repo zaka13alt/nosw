@@ -94,7 +94,15 @@
 		}
 	}
 
-	const jsonForScript = value => JSON.stringify(value).replace(/</g, "\\u003c").replace(/\u2028|\u2029/g, " ");
+	// The injected <script> text goes through UV's HTML serializer, which escapes it like
+	// normal text (& -> &amp;), so __u22$url etc. came out with "&amp;" in them (hCaptcha's
+	// #frame=...&id=... hash broke: "Chat requires unique id"). JSON \u escapes survive.
+	const jsonForScript = value =>
+		JSON.stringify(value)
+			.replace(/</g, "\\u003c")
+			.replace(/>/g, "\\u003e")
+			.replace(/&/g, "\\u0026")
+			.replace(/\u2028|\u2029/g, " ");
 
 	// Times out after `ms` of time the page could actually process the response.
 	// Rewriting big scripts/CSS blocks this thread for long stretches; a plain
