@@ -54,12 +54,12 @@
      if (this === a.storage.localStorage) return e.localStorageObj
     },
     enumerable: !1
-   }), o.localStorage) {
-   for (let t in o.localStorage) t.startsWith(i + e.location.origin + "@") && (e.localStorageObj[t.slice((i + e.location.origin + "@").length)] = o.localStorage.getItem(t));
+   }), 1) {
+   { let _rls = null; try { _rls = o.localStorage } catch (_) {} if (_rls) for (let t in _rls) t.startsWith(i + e.location.origin + "@") && (e.localStorageObj[t.slice((i + e.location.origin + "@").length)] = _rls.getItem(t)); }
    e.lsWrap = a.storage.emulate(a.storage.localStorage, e.localStorageObj)
   }
-  if (o.sessionStorage) {
-   for (let t in o.sessionStorage) t.startsWith(i + e.location.origin + "@") && (e.sessionStorageObj[t.slice((i + e.location.origin + "@").length)] = o.sessionStorage.getItem(t));
+  if (1) {
+   { let _rss = null; try { _rss = o.sessionStorage } catch (_) {} if (_rss) for (let t in _rss) t.startsWith(i + e.location.origin + "@") && (e.sessionStorageObj[t.slice((i + e.location.origin + "@").length)] = _rss.getItem(t)); }
    e.ssWrap = a.storage.emulate(a.storage.sessionStorage, e.sessionStorageObj)
   }
   a.nativeMethods.defineProperty(e.meta, "base", {
