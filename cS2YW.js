@@ -688,6 +688,14 @@
     return loader.loadDocument(abs, { referrer: V.url, method: options.method, headers: options.headers, body: options.body }).then(function (result) {
       if (result.kind === "none") return;
       if (result.kind === "download") return loader.download(result);
+      // On file:// the shell's blob:/data: URLs make an opaque-origin document that
+      // can't reach the shell or its storage. Keep same-origin by re-rendering the
+      // shell iframe via about:srcdoc (same trick the initial navigate uses).
+      var _fileMode = false;
+      try { _fileMode = u22FindShell().location.protocol === "file:"; } catch (_) {}
+      if (_fileMode && typeof result.html === "string" && o.frameElement) {
+        try { o.frameElement.srcdoc = result.html; return; } catch (_) {}
+      }
       u22NativeNavigate(result.url, options.replace);
     }, function (error) { console.error("[u22] navigation failed", error); });
   }
