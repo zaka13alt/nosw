@@ -2,11 +2,11 @@
 // works from a subfolder and from file://.
 const __u22base = self.document && document.currentScript && document.currentScript.src ? new URL(".", document.currentScript.src).href : "";
 self.__u22$config = {
-	handler: __u22base + "cS2YW.js",
-	client: __u22base + "H685r.js",
-	bundle: __u22base + "xjAbB.js",
-	config: __u22base + "J3ZwE.js",
-	loader: __u22base + "AmhtP.js",
+	handler: __u22base + "StlHE.js",
+	client: __u22base + "DcKuT.js",
+	bundle: __u22base + "HUMyZ.js",
+	config: __u22base + "ZNkNx.js",
+	loader: __u22base + "bQtBk.js",
 
 	
 	rewriteUrl(url) {

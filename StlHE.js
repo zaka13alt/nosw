@@ -863,6 +863,23 @@
     var hashAt = kind === "document" ? -1 : abs.indexOf("#");
     var bare = hashAt < 0 ? abs : abs.slice(0, hashAt);
     var hash = hashAt < 0 ? "" : abs.slice(hashAt);
+    if (kind === "document") {
+      var _fm = false;
+      try { _fm = u22FindShell().location.protocol === "file:"; } catch (_) {}
+      if (_fm) {
+        // Nested frames: a proxied data: URL would be an opaque origin that can't
+        // reach the shell. Render the frame via about:srcdoc so it inherits the
+        // file:// origin and the whole frame tree stays same-origin with the shell.
+        u22Loader().loadDocument(bare, { referrer: V.url }).then(function (doc) {
+          if (slots[attr] !== token) return;
+          if (doc && typeof doc.html === "string") {
+            try { a.element.setAttribute.call(el, "srcdoc", doc.html); return; } catch (_) {}
+          }
+          apply((doc && doc.url ? doc.url : "about:blank") + hash);
+        }, function (error) { console.warn("[u22] could not load", abs, error); apply("x-u22-failed:"); });
+        return;
+      }
+    }
     u22Loader().resource(bare, kind, V.url).then(function (blob) { apply(blob + hash); }, function (error) {
       console.warn("[u22] could not load", abs, error);
       apply("x-u22-failed:");
