@@ -593,7 +593,10 @@
     var start = { url: null, current: 0 };
     try {
       var raw = u22RawHistoryState();
-      if (raw && raw.__u22 != null && typeof raw.u === "string") { url = raw.u; start.current = raw.__u22; }
+      // Only trust the history state when it matches this document's injected URL.
+      // A srcdoc navigation reuses the iframe, so a previous document's pushState
+      // state (its URL) can linger; __u22$url is freshly injected per load and wins.
+      if (raw && raw.__u22 != null && typeof raw.u === "string" && (url == null || raw.u === url)) { url = raw.u; start.current = raw.__u22; }
     } catch (_) {}
     if (!url) {
       try {
@@ -686,7 +689,6 @@
     var loader;
     try { loader = u22Loader(); } catch (error) { console.error(error); return Promise.resolve(); }
     return loader.loadDocument(abs, { referrer: V.url, method: options.method, headers: options.headers, body: options.body }).then(function (result) {
-      try { console.warn("[u22dbg] nav result kind=" + result.kind + " status=" + result.status + " final=" + result.finalUrl); } catch (_) {}
       if (result.kind === "none") return;
       if (result.kind === "download") return loader.download(result);
       // On file:// the shell's blob:/data: URLs make an opaque-origin document that
@@ -1150,12 +1152,6 @@
     var actionRaw = get(submitter, "formaction");
     if (actionRaw == null) actionRaw = get(form, U22_MARK + "action");
     var action = actionRaw == null || actionRaw === "" ? V.url.split("#")[0] : u22Resolve(actionRaw);
-    try {
-      var _be = o.document.querySelector("base[" + U22_MARK + "href]") || o.document.querySelector("base");
-      console.warn("[u22dbg] submit base(V.url)=" + V.url + " rawAction=" + JSON.stringify(actionRaw) +
-        " -> action=" + action + " method=" + method +
-        " baseEl=" + (_be ? JSON.stringify(a.element.getAttribute.call(_be, U22_MARK + "href") || a.element.getAttribute.call(_be, "href")) : "none"));
-    } catch (_) {}
     if (!action) return;
     var data = new o.FormData(form);
     if (submitter && submitter.name) data.append(submitter.name, submitter.value);
