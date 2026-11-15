@@ -3,7 +3,7 @@
  * Page-side replacement for the former service worker.
  *
  * Runs only in the top-level shell page (index.html). Proxied documents live in
- * blob: iframes below the shell and call into this object (see q7Bz5.js), so
+ * blob: iframes below the shell and call into this object (see cS2YW.js), so
  * every network request, cookie write and blob URL is owned by one long-lived
  * realm (blob URLs die with the document that created them).
  */
@@ -74,7 +74,25 @@
 
 	const getDb = ctx => (dbPromise ||= ctx.cookie.db());
 
-	const blobUrl = (data, type) => URL.createObjectURL(new Blob([data], { type }));
+	// On file:// the shell page has an opaque (null) origin, so a blob: URL it mints
+	// is cross-origin to the blob:/srcdoc document and the browser refuses to load it
+	// ("Not allowed to load local resource: blob:null/..."). data: URLs carry no origin
+	// and load from any document, so use them there; http(s) keeps the cheaper blob: URL.
+	const FILE_ORIGIN = location.protocol === "file:";
+	const toBytes = data => {
+		if (typeof data === "string") return new TextEncoder().encode(data);
+		if (data instanceof Uint8Array) return data;
+		if (data instanceof ArrayBuffer) return new Uint8Array(data);
+		if (ArrayBuffer.isView(data)) return new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
+		return new TextEncoder().encode(String(data));
+	};
+	const dataUrl = (data, type) => {
+		const bytes = toBytes(data);
+		let binary = "";
+		for (let i = 0; i < bytes.length; i += 0x8000) binary += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+		return `data:${type || "application/octet-stream"};base64,${btoa(binary)}`;
+	};
+	const blobUrl = (data, type) => (FILE_ORIGIN ? dataUrl(data, type) : URL.createObjectURL(new Blob([data], { type })));
 
 	const header = (headers, name) => {
 		const v = headers[name];
@@ -415,7 +433,8 @@
 			});
 		} catch (error) {
 			console.error("[u22] navigation failed", error);
-			return { kind: "html", url: blobUrl(errorPage(error, url), "text/html;charset=utf-8"), finalUrl: url, status: 502 };
+			const page = errorPage(error, url);
+			return { kind: "html", html: page, url: blobUrl(page, "text/html;charset=utf-8"), finalUrl: url, status: 502 };
 		}
 
 		const requested = new URL(url);
@@ -449,7 +468,7 @@
 			_7b2PqHead: headNodes(final.href, cookies, referrer),
 			u22Resolved: resolved || undefined,
 		});
-		return { kind: "html", url: blobUrl(html, "text/html;charset=utf-8"), finalUrl: final.href, status: res.status };
+		return { kind: "html", html, url: blobUrl(html, "text/html;charset=utf-8"), finalUrl: final.href, status: res.status };
 	}
 
 	
@@ -497,7 +516,16 @@
 		const doc = await loadDocument(url, { referrer: "" });
 		if (doc.kind === "none") return doc;
 		if (doc.kind === "download") return download(doc);
-		iframe.src = doc.url;
+		// On file:// a blob:/data: document is a distinct opaque origin: it could reach
+		// neither the shell (parent.u22Loader) nor the shell's blob: URLs. An about:srcdoc
+		// document inherits the shell's origin, so parent access keeps working and its
+		// sub-resources (data: URLs, see blobUrl) load. http(s) keeps the blob: src.
+		if (FILE_ORIGIN && typeof doc.html === "string") {
+			iframe.removeAttribute("src");
+			iframe.srcdoc = doc.html;
+		} else {
+			iframe.src = doc.url;
+		}
 		return doc;
 	}
 
